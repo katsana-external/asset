@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Orchestra\Asset;
 
 use Illuminate\Contracts\Support\Htmlable;
@@ -111,7 +113,7 @@ class Asset implements Htmlable
         $attributes = [],
         $replaces = []
     ) {
-        $type = (\strpos(\pathinfo($source, PATHINFO_EXTENSION), 'css') === 0) ? 'style' : 'script';
+        $type = str_contains(pathinfo($source, PATHINFO_EXTENSION), 'css') ? 'style' : 'script';
 
         return $this->$type($name, $source, $dependencies, $attributes, $replaces);
     }
@@ -185,7 +187,7 @@ class Asset implements Htmlable
         $replaces = (array) $replaces;
 
         if (\is_array($name)) {
-            $replaces = \array_merge($name, $replaces);
+            $replaces = [...$name, ...$replaces];
             $name = '*';
         }
 
